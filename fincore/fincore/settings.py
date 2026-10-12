@@ -9,9 +9,14 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
+
+
 ## for database connection through env
 import pymysql
 pymysql.install_as_MySQLdb()
+
+import environ
+import os
 
 from pathlib import Path
 
@@ -19,15 +24,21 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-gl9*+=v_whmx$ggi5bx2hb1zev6xq^617wc^oj9q(cx1af1#5f"
+SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -47,8 +58,11 @@ INSTALLED_APPS = [
     "notifications",
     "core",
     "rest_framework",
-    "rest_framework_simplejwt"
+    "rest_framework_simplejwt",
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
