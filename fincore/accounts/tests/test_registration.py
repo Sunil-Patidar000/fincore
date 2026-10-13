@@ -14,3 +14,18 @@ class RegistrationTests(APITestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertTrue(User.objects.filter(username="Shiva").exists())
+
+    def test_duplicate_username(self):
+        data ={
+            "username": "Shiva",
+            "email":"vasi@example.com",
+            "password":"vasi123",
+            "role":"Customer"
+        }
+        User.objects.create_user(username="Shiva",email="shivaaa@example.com",password="123456",role="Customer")
+       
+
+        response = self.client.post("/api/auth/register/",data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(User.objects.filter(username="Shiva").count(),1)
