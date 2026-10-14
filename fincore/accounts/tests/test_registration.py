@@ -42,3 +42,29 @@ class RegistrationTests(APITestCase):
         response =self.client.post("/api/auth/register/",data)
         self.assertEqual(response.status_code,400)
         self.assertEqual(User.objects.filter(email="Shiva@gmail.com").count(),1)
+
+    def test_missing_email(self):
+        data ={
+            "username":"Shiva",
+            "password":"123456",
+            "role":"Customer"
+
+        }
+
+        response = self.client.post("/api/auth/register/",data)
+
+        self.assertEqual(response.status_code,400)
+        self.assertFalse(User.objects.filter(username="Shiva").exists())
+
+    def test_password_not_in_response(self):
+        data ={
+            "username":"Shiva",
+            "email":"shiva@example.com",
+            "password":"123456",
+            "role":"Customer"
+        }
+
+        response = self.client.post("/api/auth/register/",data)
+
+        self.assertEqual(response.status_code,201)
+        self.assertNotIn("password",response.data)
