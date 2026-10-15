@@ -68,3 +68,18 @@ class RegistrationTests(APITestCase):
 
         self.assertEqual(response.status_code,201)
         self.assertNotIn("password",response.data)
+
+    def test_register_cannot_set_admin_role(self):
+        data ={
+            "username":"Shiva",
+            "email":"shiva@example.com",
+            "password":"123456",
+            "role":"Admin"
+        }
+
+        response = self.client.post("/api/auth/register/",data)
+
+        self.assertEqual(response.status_code,201)
+
+        check=User.objects.get(username="Shiva")
+        self.assertEqual(check.role,"Customer")
