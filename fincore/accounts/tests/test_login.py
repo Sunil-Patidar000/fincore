@@ -1,4 +1,3 @@
-from django.template import response
 from rest_framework.test import APITestCase
 from accounts.models import User
 
