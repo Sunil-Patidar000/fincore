@@ -3,7 +3,7 @@
 
 **Version:** 1.0
 **Status:** Draft
-**Date:** [Fill Date]
+**Date:** 17-08-2026
 **Related Document:** [BRD.md](./BRD.md)
 
 ---
